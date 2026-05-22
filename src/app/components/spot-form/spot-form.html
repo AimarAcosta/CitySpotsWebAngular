@@ -1,0 +1,69 @@
+<h3 class="mb-4 text-center">{{ isEditMode ? lang.get('FormTitleEdit') : lang.get('FormTitleCreate') }}</h3>
+
+@if (showError) {
+  <div class="alert alert-danger">{{ lang.get('ErrorForm') }}</div>
+}
+
+<div class="container pb-5">
+  <form>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label class="form-label">{{ lang.get('Name') }}</label>
+          <input class="form-control" [(ngModel)]="spot.name" name="name" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">{{ lang.get('Country') }}</label>
+          <select class="form-select" [(ngModel)]="spot.countryId" name="countryId">
+            <option [ngValue]="0">{{ lang.get('SelectCountry') }}</option>
+            @for (c of countries; track c.id) {
+              <option [ngValue]="c.id">{{ c.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">{{ lang.get('Category') }}</label>
+          <select class="form-select" [(ngModel)]="spot.categoryId" name="categoryId">
+            <option [ngValue]="0">{{ lang.get('SelectCategory') }}</option>
+            @for (c of categories; track c.id) {
+              <option [ngValue]="c.id">{{ c.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">{{ lang.get('City') }}</label>
+          <input class="form-control" [(ngModel)]="spot.city" name="city" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">{{ lang.get('Rating') }}</label>
+          <input type="number" min="1" max="5" class="form-control" [(ngModel)]="spot.rating" name="rating" />
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">{{ lang.get('MapInstruction') }}</label>
+        <div id="mapForm" style="height: 300px; width: 100%; border-radius: 8px; border: 1px solid #ced4da;" class="mb-3"></div>
+        
+        <div class="row">
+          <div class="col-6 mb-3">
+            <label class="form-label">{{ lang.get('Lat') }}</label>
+            <input type="number" step="any" class="form-control" [(ngModel)]="spot.lat" name="lat" />
+          </div>
+          <div class="col-6 mb-3">
+            <label class="form-label">{{ lang.get('Lng') }}</label>
+            <input type="number" step="any" class="form-control" [(ngModel)]="spot.lng" name="lng" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+      <button type="button" class="btn btn-secondary me-md-2" routerLink="/spots">{{ lang.get('Cancel') }}</button>
+      <button type="button" class="btn btn-success" (click)="saveSpot()">{{ lang.get('Save') }}</button>
+    </div>
+  </form>
+</div>

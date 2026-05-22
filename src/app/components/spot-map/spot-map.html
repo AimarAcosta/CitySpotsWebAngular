@@ -1,0 +1,28 @@
+<h3 class="mb-4 text-center">{{ lang.get('MapTitle') }}</h3>
+
+<div class="card shadow-sm mb-4">
+  <div class="card-body p-0">
+    <div id="mapGeneral" style="height: 500px; width: 100%; border-radius: 8px;"></div>
+  </div>
+</div>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h5 class="mb-0">{{ lang.get('MapListTitle') }}</h5>
+  <button class="btn btn-secondary" routerLink="/spots">{{ lang.get('BackList') }}</button>
+</div>
+
+<div class="row">
+  @for (spot of spots; track spot.id) {
+    <div class="col-md-4 mb-3">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body d-flex flex-column justify-content-between">
+          <div>
+            <h6 class="card-title fw-bold text-dark">{{ spot.name }}</h6>
+            <p class="card-text text-muted small mb-2">{{ spot.city }}</p>
+          </div>
+          <button class="btn btn-outline-primary btn-sm w-100 mt-2" [routerLink]="['/spots', spot.id]">{{ lang.get('DetailBtn') }}</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,58 @@
+<div class="row mb-3">
+  <div class="col-md-4">
+    <input class="form-control" [placeholder]="lang.get('SearchPlaceholder')" [(ngModel)]="searchTerm" (ngModelChange)="applyFilters()">
+  </div>
+  <div class="col-md-4">
+    <select class="form-select" [(ngModel)]="selectedCountry" (ngModelChange)="applyFilters()">
+      <option value="">{{ lang.get('AllCountries') }}</option>
+      @for (c of countries; track c.id) {
+        <option [value]="c.id">{{ c.name }}</option>
+      }
+    </select>
+  </div>
+  <div class="col-md-4">
+    <select class="form-select" [(ngModel)]="selectedCategory" (ngModelChange)="applyFilters()">
+      <option value="">{{ lang.get('AllCategories') }}</option>
+      @for (c of categories; track c.id) {
+        <option [value]="c.id">{{ c.name }}</option>
+      }
+    </select>
+  </div>
+</div>
+
+<div class="mb-3">
+  <button class="btn btn-success me-2" routerLink="/spots/create">{{ lang.get('CreateBtn') }}</button>
+  <button class="btn btn-info" routerLink="/map">{{ lang.get('MapBtn') }}</button>
+</div>
+
+@if (filteredSpots.length === 0) {
+  <div class="alert alert-warning">{{ lang.get('NoSpots') }}</div>
+} @else {
+  <table class="table table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>{{ lang.get('Name') }}</th>
+        <th>{{ lang.get('City') }}</th>
+        <th>{{ lang.get('Country') }}</th>
+        <th>{{ lang.get('Category') }}</th>
+        <th>{{ lang.get('Rating') }}</th>
+        <th>{{ lang.get('Actions') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (spot of filteredSpots; track spot.id) {
+        <tr>
+          <td><a [routerLink]="['/spots', spot.id]">{{ spot.name }}</a></td>
+          <td>{{ spot.city }}</td>
+          <td>{{ getCountryName(spot.countryId) }}</td>
+          <td>{{ getCategoryName(spot.categoryId) }}</td>
+          <td>{{ spot.rating }}</td>
+          <td>
+            <button class="btn btn-primary btn-sm me-1" [routerLink]="['/spots', spot.id, 'edit']">{{ lang.get('Edit') }}</button>
+            <button class="btn btn-danger btn-sm" (click)="deleteSpot(spot.id)">{{ lang.get('Delete') }}</button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}

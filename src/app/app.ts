@@ -1,12 +1,18 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { LanguageService } from './services/language';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.html',
-  styleUrl: './app.css'
+  standalone: true,
+  imports: [RouterOutlet, FormsModule],
+  templateUrl: './app.html'
 })
 export class App {
-  protected readonly title = signal('city-spots-web');
+  langService = inject(LanguageService);
+
+  changeLang(event: any) {
+    this.langService.setLanguage(event.target.value);
+  }
 }

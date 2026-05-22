@@ -1,0 +1,31 @@
+<h3 class="mb-4 text-center">{{ lang.get('DetailTitle') }}</h3>
+
+@if (!spot) {
+  <div class="alert alert-warning text-center">{{ lang.get('LoadingDetail') }}</div>
+} @else {
+  <div class="card shadow-sm mx-auto" style="max-width: 700px;">
+    <div class="row g-0">
+      <div class="col-md-6">
+        <div class="card-body">
+          <h4 class="card-title text-primary">{{ spot.name }}</h4>
+          <h6 class="card-subtitle mb-3 text-muted">{{ spot.city }}, {{ getCountryName(spot.countryId) }}</h6>
+          
+          <ul class="list-group list-group-flush mb-4">
+            <li class="list-group-item"><strong>{{ lang.get('Category') }}:</strong> {{ getCategoryName(spot.categoryId) }}</li>
+            <li class="list-group-item"><strong>{{ lang.get('Rating') }}:</strong> {{ spot.rating }} / 5</li>
+            <li class="list-group-item"><strong>{{ lang.get('Lat') }}:</strong> {{ spot.lat }}</li>
+            <li class="list-group-item"><strong>{{ lang.get('Lng') }}:</strong> {{ spot.lng }}</li>
+          </ul>
+
+          <div class="d-flex flex-column gap-2">
+            <button class="btn btn-success w-100" (click)="openExternalMap()">{{ lang.get('OpenExternalMap') }}</button>
+            <button class="btn btn-secondary w-100" routerLink="/spots">{{ lang.get('BackList') }}</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 bg-light" style="min-height: 300px;">
+        <div id="mapDetail" style="height: 100%; width: 100%; min-height: 300px; border-radius: 0 8px 8px 0;"></div>
+      </div>
+    </div>
+  </div>
+}

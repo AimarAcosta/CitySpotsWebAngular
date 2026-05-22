@@ -1,0 +1,65 @@
+{
+  "countries": [
+    { "id": "1", "name": "España" },
+    { "id": "2", "name": "Francia" },
+    { "id": "3", "name": "Italia" }
+  ],
+  "categories": [
+    { "id": "1", "name": "Parque" },
+    { "id": "2", "name": "Museo" },
+    { "id": "3", "name": "Monumento" },
+    { "id": "4", "name": "Historia" }
+  ],
+  "spots": [
+    {
+      "id": "1",
+      "name": "Parque del Retiro",
+      "categoryId": 1,
+      "countryId": 1,
+      "city": "Madrid",
+      "rating": 4.8,
+      "lat": 40.4153,
+      "lng": -3.6844
+    },
+    {
+      "id": "2",
+      "name": "Museo del Prado",
+      "categoryId": 2,
+      "countryId": 1,
+      "city": "Madrid",
+      "rating": 4.9,
+      "lat": 40.4138,
+      "lng": -3.6921
+    },
+    {
+      "id": "3",
+      "name": "Sagrada Familia",
+      "categoryId": 3,
+      "countryId": 1,
+      "city": "Barcelona",
+      "rating": 4.7,
+      "lat": 41.4036,
+      "lng": 2.1744
+    },
+    {
+      "id": "4",
+      "name": "Torre Eiffel",
+      "categoryId": 3,
+      "countryId": 2,
+      "city": "París",
+      "rating": 4.9,
+      "lat": 48.8584,
+      "lng": 2.2945
+    },
+    {
+      "id": "5",
+      "name": "Coliseo",
+      "categoryId": 4,
+      "countryId": 3,
+      "city": "Roma",
+      "rating": 4.8,
+      "lat": 41.8902,
+      "lng": 12.4922
+    }
+  ]
+}
