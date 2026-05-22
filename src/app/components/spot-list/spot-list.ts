@@ -3,20 +3,20 @@ import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { forkJoin } from 'rxjs';
 import { ApiService } from '../../services/api';
+import { LanguageService } from '../../services/language';
 import { Spot } from '../../models/spot.model';
 import { Country } from '../../models/country.model';
 import { Category } from '../../models/category.model';
-import { LanguageService } from '../../services/language';
 
 @Component({
   selector: 'app-spot-list',
   standalone: true,
   imports: [RouterLink, FormsModule],
-  templateUrl: './spot-list.html'
+  templateUrl: './spot-list.html',
 })
 export class SpotList implements OnInit {
   private api = inject(ApiService);
-  private cdr = inject(ChangeDetectorRef); 
+  private cdr = inject(ChangeDetectorRef);
   lang = inject(LanguageService);
 
   spots: Spot[] = [];
@@ -36,51 +36,55 @@ export class SpotList implements OnInit {
     forkJoin({
       countries: this.api.getCountries(),
       categories: this.api.getCategories(),
-      spots: this.api.getSpots()
+      spots: this.api.getSpots(),
     }).subscribe({
-      next: (result) => {
-        this.countries = result.countries;
-        this.categories = result.categories;
-        this.spots = result.spots;
-
+      next: (res) => {
+        this.countries = res.countries;
+        this.categories = res.categories;
+        this.spots = res.spots;
         this.applyFilters();
-        
-        this.cdr.detectChanges(); 
+        this.cdr.detectChanges();
       },
-      error: (err) => console.error('Error en carga inicial:', err)
+      error: (e) => console.error(e),
     });
   }
 
   applyFilters() {
-    this.filteredSpots = this.spots.filter(s => {
-      const matchName = !this.searchTerm || s.name.toLowerCase().includes(this.searchTerm.toLowerCase());
-      const matchCountry = !this.selectedCountry || s.countryId.toString() === this.selectedCountry;
-      const matchCategory = !this.selectedCategory || s.categoryId.toString() === this.selectedCategory;
+    this.filteredSpots = this.spots.filter((s) => {
+      const matchName =
+        !this.searchTerm ||
+        s.name.toLowerCase().includes(this.searchTerm.toLowerCase());
+      const matchCountry =
+        !this.selectedCountry ||
+        s.countryId.toString() === this.selectedCountry;
+      const matchCategory =
+        !this.selectedCategory ||
+        s.categoryId.toString() === this.selectedCategory;
       return matchName && matchCountry && matchCategory;
     });
   }
 
   getCountryName(id: number): string {
-    const country = this.countries.find(c => c.id === id.toString());
-    return country ? country.name : '';
+    const c = this.countries.find((x) => x.id === id.toString());
+    return c ? c.name : '';
   }
 
   getCategoryName(id: number): string {
-    const category = this.categories.find(c => c.id === id.toString());
-    return category ? category.name : '';
+    const c = this.categories.find((x) => x.id === id.toString());
+    return c ? c.name : '';
   }
 
   deleteSpot(id: string) {
     if (confirm(this.lang.get('DeleteConfirm'))) {
       this.api.deleteSpot(id).subscribe({
         next: () => {
-          this.api.getSpots().subscribe(data => {
+          this.api.getSpots().subscribe((data) => {
             this.spots = data;
             this.applyFilters();
             this.cdr.detectChanges();
           });
         },
-        error: (err) => console.error(err)
+        error: (e) => console.error(e),
       });
     }
   }

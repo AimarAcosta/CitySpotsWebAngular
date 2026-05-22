@@ -1,15 +1,16 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../services/api';
+import { LanguageService } from '../../services/language';
 import { Spot } from '../../models/spot.model';
 import * as L from 'leaflet';
-import { LanguageService } from '../../services/language';
 
 @Component({
   selector: 'app-spot-map',
   standalone: true,
   imports: [RouterLink],
-  templateUrl: './spot-map.html'
+  templateUrl: './spot-map.html',
+  styleUrl: './spot-map.css',
 })
 export class SpotMap implements OnInit {
   private api = inject(ApiService);
@@ -25,17 +26,19 @@ export class SpotMap implements OnInit {
         this.spots = data;
         setTimeout(() => this.initGeneralMap(), 100);
       },
-      error: (err) => console.error(err)
+      error: (e) => console.error(e),
     });
   }
 
   initGeneralMap() {
     this.map = L.map('mapGeneral').setView([43.2627, -2.9253], 6);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(
+      this.map,
+    );
 
     const bounds: L.LatLngTuple[] = [];
 
-    this.spots.forEach(spot => {
+    this.spots.forEach((spot) => {
       if (spot.lat && spot.lng) {
         const marker = L.marker([spot.lat, spot.lng]).addTo(this.map!);
         bounds.push([spot.lat, spot.lng]);

@@ -2,17 +2,18 @@ import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api';
+import { LanguageService } from '../../services/language';
 import { Spot } from '../../models/spot.model';
 import { Country } from '../../models/country.model';
 import { Category } from '../../models/category.model';
 import * as L from 'leaflet';
-import { LanguageService } from '../../services/language';
 
 @Component({
   selector: 'app-spot-form',
   standalone: true,
   imports: [FormsModule, RouterLink],
   templateUrl: './spot-form.html',
+  styleUrl: './spot-form.css',
 })
 export class SpotForm implements OnInit {
   private api = inject(ApiService);
@@ -41,12 +42,12 @@ export class SpotForm implements OnInit {
   ngOnInit() {
     this.api.getCountries().subscribe({
       next: (data) => (this.countries = data),
-      error: (err) => console.error(err),
+      error: (e) => console.error(e),
     });
 
     this.api.getCategories().subscribe({
       next: (data) => (this.categories = data),
-      error: (err) => console.error(err),
+      error: (e) => console.error(e),
     });
 
     const id = this.route.snapshot.paramMap.get('id');
@@ -57,7 +58,7 @@ export class SpotForm implements OnInit {
           this.spot = data;
           this.initMap();
         },
-        error: (err) => console.error(err),
+        error: (e) => console.error(e),
       });
     } else {
       setTimeout(() => this.initMap(), 100);
@@ -109,13 +110,13 @@ export class SpotForm implements OnInit {
     if (this.isEditMode) {
       this.api.updateSpot(this.spot.id, this.spot).subscribe({
         next: () => this.router.navigate(['/spots']),
-        error: (err) => console.error(err),
+        error: (e) => console.error(e),
       });
     } else {
       this.spot.id = Date.now().toString();
       this.api.createSpot(this.spot).subscribe({
         next: () => this.router.navigate(['/spots']),
-        error: (err) => console.error(err),
+        error: (e) => console.error(e),
       });
     }
   }
